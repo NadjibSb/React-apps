@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import Pagination from "./pagination";
 
 class Movies extends Component {
   state = {
     movies: getMovies(),
+    currentPage: 1,
+    pageSize: 4,
   };
 
   handleDeleteClick = (movie) => {
@@ -19,7 +22,16 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
+  handlePageChange = (currentPage) => {
+    this.setState({ currentPage });
+  };
+
   render() {
+    const { movies, currentPage, pageSize } = this.state;
+    const movies_toDisplay = movies.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+    );
     return (
       <div className="container">
         <table className="table">
@@ -34,7 +46,7 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie) => (
+            {movies_toDisplay.map((movie) => (
               <tr key={movie._id}>
                 <th>{movie.title}</th>
                 <td>{movie.genre.name}</td>
@@ -60,6 +72,12 @@ class Movies extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination
+          itemsCount={movies.length}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
       </div>
     );
   }
