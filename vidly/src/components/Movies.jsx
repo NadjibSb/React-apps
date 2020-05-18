@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import { getGenres } from "../services/fakeGenreService";
+import paginate from "../utilities/paginate";
 import Pagination from "./common/pagination";
 import ListGroup from "./common/listGroup";
-import paginate from "../utilities/paginate";
+import MoviesTable from "./moviesTable";
 
 class Movies extends Component {
   state = {
-    movies: getMovies(),
+    movies: [],
+    genres: [],
     currentPage: 1,
     pageSize: 4,
-    genre: 0,
+    currentGenre: { name: "All genres" },
+  };
+
+  componentDidMount = () => {
+    const genres = [this.state.currentGenre, ...getGenres()];
+    this.setState({ movies: getMovies(), genres });
   };
 
   handleDeleteClick = (movie) => {
@@ -17,7 +25,7 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  hadleFavClick = (movie) => {
+  handleFavClick = (movie) => {
     const movies = [...this.state.movies];
     const i = movies.indexOf(movie);
     movies[i] = { ...movies[i] };
@@ -29,67 +37,44 @@ class Movies extends Component {
     this.setState({ currentPage });
   };
 
-  handleGenreChange = (genre) => {
-    let movies = [...getMovies()];
-    if (genre !== 0) {
-      movies = movies.filter(function (m) {
-        console.log(m.genre.name, genre.name);
-        return m.genre.name === genre.name;
-      });
-    }
-    this.setState({ movies, genre, currentPage: 0 });
+  handleGenreChange = (currentGenre) => {
+    this.setState({ currentGenre, currentPage: 1 });
   };
 
   render() {
-    const { movies: allMovies, currentPage, pageSize, genre } = this.state;
-    const movies = paginate(allMovies, currentPage, pageSize);
+    const {
+      movies: allMovies,
+      genres,
+      currentPage,
+      pageSize,
+      currentGenre,
+    } = this.state;
+
+    const filtered =
+      currentGenre && currentGenre._id
+        ? allMovies.filter((m) => m.genre._id === currentGenre._id)
+        : allMovies;
+
+    const movies = paginate(filtered, currentPage, pageSize);
 
     return (
       <div className="row m-5">
         <div className="col-2">
-          <ListGroup groupeActive={genre} onClick={this.handleGenreChange} />
+          <ListGroup
+            items={genres}
+            selectedItem={currentGenre}
+            onItemClick={this.handleGenreChange}
+          />
         </div>
         <div className="col">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Genre</th>
-                <th>Stock</th>
-                <th>Rate</th>
-                <th></th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {movies.map((movie) => (
-                <tr key={movie._id}>
-                  <th>{movie.title}</th>
-                  <td>{movie.genre.name}</td>
-                  <td>{movie.numberInStock}</td>
-                  <td>{movie.dailyRentalRate}</td>
-                  <td>
-                    <i
-                      className={this.getFavClasses(movie.liked)}
-                      aria-hidden="true"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => this.hadleFavClick(movie)}
-                    ></i>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-danger m-2"
-                      onClick={() => this.handleDeleteClick(movie)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <MoviesTable
+            movies={movies}
+            onLike={this.handleFavClick}
+            onDelete={this.handleDeleteClick}
+          />
+
           <Pagination
-            itemsCount={allMovies.length}
+            itemsCount={filtered.length}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
@@ -97,10 +82,6 @@ class Movies extends Component {
         </div>
       </div>
     );
-  }
-
-  getFavClasses(bool) {
-    return bool ? "fa fa-heart" : "fa fa-heart-o";
   }
 }
 
