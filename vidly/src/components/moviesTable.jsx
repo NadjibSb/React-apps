@@ -1,20 +1,48 @@
 import React from "react";
 
 const MoviesTable = (props) => {
-  const { movies, onLike, onDelete } = props;
+  const { movies, onLike, onDelete, onSort, sortColumn } = props;
 
   function getFavClasses(bool) {
     return bool ? "fa fa-heart" : "fa fa-heart-o";
+  }
+
+  function handleSortClick(path) {
+    const col = { ...sortColumn };
+    if (path === col.path) col.order = col.order === "asc" ? "desc" : "asc";
+    else {
+      col.path = path;
+      col.order = "asc";
+    }
+
+    onSort(col);
+  }
+
+  function renderSortIcon(column) {
+    if (column !== sortColumn.path) return null;
+    return sortColumn.order === "asc" ? (
+      <i className="fa fa-sort-asc"></i>
+    ) : (
+      <i className="fa fa-sort-desc"></i>
+    );
   }
 
   return (
     <table className="table">
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Genre</th>
-          <th>Stock</th>
-          <th>Rate</th>
+          <th onClick={() => handleSortClick("title")}>
+            Title {renderSortIcon("title")}
+          </th>
+          <th onClick={() => handleSortClick("genre.name")}>
+            Genre {renderSortIcon("genre.name")}
+          </th>
+          <th onClick={() => handleSortClick("numberInStock")}>
+            Stock {renderSortIcon("numberInStock")}
+          </th>
+          <th onClick={() => handleSortClick("dailyRentalRate")}>
+            Rate {renderSortIcon("dailyRentalRate")}
+          </th>
           <th></th>
           <th>Action</th>
         </tr>
