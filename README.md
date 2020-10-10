@@ -1,4 +1,5 @@
 # React-apps
+
 The apps I created when learning React :
 
 - **[Counter-app](#counterApp)**
@@ -8,11 +9,19 @@ The apps I created when learning React :
 
 The **Counter-App** is a list of counters which each counter controle its state.
 This app introduces the use of the react basics:
-- Components 
+
+- Components
 - State
 - Props
 - Event handling
-- Functional components 
+- Functional components
 - Life cycle hooks
 
 ## <a name="vidly">Vidly</a>
+
+Vidly display a list of movies with a banch of options, this app uses :
+
+- Pagination
+- Type checking / default props, with PropTypes
+- Filtering
+- Sorting
