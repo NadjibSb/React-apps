@@ -27,3 +27,10 @@ Vidly display a list of movies with a banch of options, this app uses :
 - Sorting
 - Reuable Components
 
+## <a name="router-App">Router-App</a>
+
+- Routing
+- Route parameters
+- Query-string
+- Redirect
+- Nested Routing
