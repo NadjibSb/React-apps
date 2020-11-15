@@ -1,6 +1,5 @@
 import React from "react";
-import TableHeader from "./common/tableHeader";
-import TableBody from "./common/tableBody";
+import Table from "./common/Table/table";
 
 const MoviesTable = (props) => {
   const { movies, onLike, onDelete, onSort, sortColumn: sortHeader } = props;
@@ -39,15 +38,12 @@ const MoviesTable = (props) => {
   }
 
   return (
-    <table className="table">
-      <TableHeader headers={headers} onSort={onSort} sortHeader={sortHeader} />
-      <TableBody
-        data={movies}
-        headers={headers}
-        onLike={onLike}
-        onDelete={onDelete}
-      />
-    </table>
+    <Table
+      headers={headers}
+      data={movies}
+      sortHeader={sortHeader}
+      onSort={onSort}
+    />
   );
 };
 
