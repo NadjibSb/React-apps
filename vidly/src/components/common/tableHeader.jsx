@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class TableHeader extends Component {
   raiseSortClick = (path) => {
-    const col = { ...this.props.sortColumn };
+    const col = { ...this.props.sortHeader };
     if (path === col.path) col.order = col.order === "asc" ? "desc" : "asc";
     else {
       col.path = path;
@@ -12,8 +13,8 @@ class TableHeader extends Component {
   };
 
   renderSortIcon(path) {
-    if (path !== this.props.sortColumn.path) return null;
-    return this.props.sortColumn.order === "asc" ? (
+    if (path !== this.props.sortHeader.path) return null;
+    return this.props.sortHeader.order === "asc" ? (
       <i className="fa fa-sort-asc"></i>
     ) : (
       <i className="fa fa-sort-desc"></i>
@@ -24,9 +25,12 @@ class TableHeader extends Component {
     return (
       <thead>
         <tr>
-          {this.props.columns.map((column) => (
-            <th onClick={() => this.raiseSortClick(column.path)}>
-              {column.label} {this.renderSortIcon(column.path)}
+          {this.props.headers.map((header) => (
+            <th
+              key={header.path || header.key}
+              onClick={() => this.raiseSortClick(header.path)}
+            >
+              {header.label} {this.renderSortIcon(header.path)}
             </th>
           ))}
         </tr>
@@ -34,5 +38,11 @@ class TableHeader extends Component {
     );
   }
 }
+
+TableHeader.propTypes = {
+  headers: PropTypes.array.isRequired,
+  sortHeader: PropTypes.object,
+  onSort: PropTypes.func,
+};
 
 export default TableHeader;
