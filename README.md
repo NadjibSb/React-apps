@@ -25,3 +25,5 @@ Vidly display a list of movies with a banch of options, this app uses :
 - Type checking / default props, with PropTypes
 - Filtering
 - Sorting
+- Reuable Components
+
