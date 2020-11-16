@@ -79,15 +79,15 @@ class Movies extends Component {
     const { movies, totalCount } = this.getPagedData();
 
     return (
-      <div className="row m-5">
-        <div className="col-2">
+      <div className="row m-5 ">
+        <div className="col-2 offset-1">
           <ListGroup
             items={genres}
             selectedItem={currentGenre}
             onItemClick={this.handleGenreChange}
           />
         </div>
-        <div className="col">
+        <div className="col-7 ">
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
