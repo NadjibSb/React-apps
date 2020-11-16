@@ -16,7 +16,9 @@ class TableBody extends Component {
         {data.map((item) => (
           <tr key={item._id}>
             {headers.map((header) => (
-              <td>{this.renderCell(item, header)}</td>
+              <td key={item._id + (header.path || header.key)}>
+                {this.renderCell(item, header)}
+              </td>
             ))}
           </tr>
         ))}
