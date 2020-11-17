@@ -8,6 +8,7 @@ import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
+import Register from "./components/registerForm";
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
             <Route path="/movies/:id" component={MovieForm} />
             <Route path="/movies" component={Movies} />
             <Route path="/login" component={LoginForm} />
+            <Route path="/register" component={Register} />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Redirect from="/" to="/movies" />
