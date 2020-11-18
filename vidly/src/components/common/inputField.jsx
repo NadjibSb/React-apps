@@ -21,7 +21,6 @@ const InputField = ({ name, label, value, type, onChange, error }) => {
 InputField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string,
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   error: PropTypes.string,

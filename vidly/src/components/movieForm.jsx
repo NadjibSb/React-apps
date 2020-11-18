@@ -1,17 +1,67 @@
-import React from "react";
+import React, { Component } from "react";
+import Form from "./common/form";
+import Joi from "joi-browser";
+import { getGenres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/fakeMovieService";
 
-const MovieForm = ({ match, history }) => {
-  function onSave() {
-    history.push("/movies");
+class MovieForm extends Form {
+  state = {
+    data: { title: "", genreId: "", rate: "", stock: "" },
+    genres: [],
+    errors: {},
+  };
+  schema = {
+    _id: Joi.string(),
+    title: Joi.string().required().label("Movie title"),
+    genreId: Joi.string().required().label("Genre"),
+    rate: Joi.number().min(0).max(10).required().label("Rate"),
+    stock: Joi.number().min(0).max(100).required().label("Number in stock"),
+  };
+
+  componentDidMount = () => {
+    const genres = getGenres();
+    const movieId = this.props.match.params.id;
+    let movie = getMovie(movieId);
+
+    if (movie) {
+      movie = this.mapToViewModel(movie);
+      const currentGenre = genres.find((g) => g._id === movie.genreId);
+      currentGenre.selected = true;
+      this.setState({ genres, data: movie });
+    } else {
+      this.setState({ genres });
+    }
+  };
+
+  mapToViewModel = (movie) => {
+    return {
+      _id: movie._id,
+      title: movie.title,
+      genreId: movie.genre._id,
+      rate: movie.dailyRentalRate,
+      stock: movie.numberInStock,
+    };
+  };
+
+  onSubmit = () => {
+    saveMovie(this.state.data);
+    this.props.history.push("/movies");
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>Movie {}</h1>
+        <form onSubmit={this.handleSubmit}>
+          {this.renderInput("title", "Title", "text")}
+          {this.renderSelect("genreId", "Genre", this.state.genres)}
+          {this.renderInput("stock", "Number in stock", "number")}
+          {this.renderInput("rate", "Rate", "text")}
+          {this.renderButton("Save")}
+        </form>
+      </div>
+    );
   }
-  return (
-    <div>
-      <h1>Movie {match.params.id}</h1>
-      <button className="btn btn-primary" onClick={onSave}>
-        Save
-      </button>
-    </div>
-  );
-};
+}
 
 export default MovieForm;

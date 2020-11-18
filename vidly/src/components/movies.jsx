@@ -6,6 +6,7 @@ import Pagination from "./common/pagination";
 import ListGroup from "./common/listGroup";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -79,15 +80,18 @@ class Movies extends Component {
     const { movies, totalCount } = this.getPagedData();
 
     return (
-      <div className="row m-5 ">
+      <div className="row my-5 ">
         <div className="col-2">
           <ListGroup
             items={genres}
             selectedItem={currentGenre}
             onItemClick={this.handleGenreChange}
           />
+          <Link to="/movies/new">
+            <button className="btn btn-primary my-4 w-100">New movie</button>
+          </Link>
         </div>
-        <div className="col-7 ">
+        <div className="col-8 offset-1">
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
