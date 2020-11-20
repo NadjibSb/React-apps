@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { getGenres } from "../services/fakeGenreService";
+import { genres, getGenres } from "../services/fakeGenreService";
 import { getMovie, saveMovie } from "../services/fakeMovieService";
+import g from "joi-browser";
 
 class MovieForm extends Form {
   state = {
@@ -43,8 +44,21 @@ class MovieForm extends Form {
     };
   };
 
+  mapToModel = (data) => {
+    return {
+      _id: data._id,
+      title: data.title,
+      genreId: data.genreId,
+      dailyRentalRate: data.rate,
+      numberInStock: data.stock,
+    };
+  };
+
   onSubmit = () => {
-    saveMovie(this.state.data);
+    const m = this.mapToModel(this.state.data);
+    console.log(m);
+    const mv = saveMovie(m);
+    console.log(mv);
     this.props.history.push("/movies");
   };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 
-const InputField = ({ name, label, value, type, onChange, error }) => {
+const InputField = ({ name, label, value, type, onChange, error, rest }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
@@ -12,6 +12,7 @@ const InputField = ({ name, label, value, type, onChange, error }) => {
         onChange={onChange}
         type={type}
         className="form-control"
+        {...rest}
       />
 
       {error && <div className="alert alert-danger">{error}</div>}

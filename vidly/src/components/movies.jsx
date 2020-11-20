@@ -7,12 +7,14 @@ import ListGroup from "./common/listGroup";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import SearchInput from "./searchInput";
 
 class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     currentPage: 1,
+    searchQuery: "",
     pageSize: 4,
     currentGenre: { name: "All genres" },
     sortColumn: { path: "title", order: "asc" },
@@ -41,7 +43,11 @@ class Movies extends Component {
   };
 
   handleGenreChange = (currentGenre) => {
-    this.setState({ currentGenre, currentPage: 1 });
+    this.setState({ currentGenre, searchQuery: "", currentPage: 1 });
+  };
+
+  handleSearchChange = (query) => {
+    this.setState({ searchQuery: query, currentGenre: {}, currentPage: 1 });
   };
 
   handleSortClick = (sortColumn) => {
@@ -54,13 +60,17 @@ class Movies extends Component {
       currentPage,
       sortColumn,
       pageSize,
+      searchQuery,
       currentGenre,
     } = this.state;
 
-    const filtered =
-      currentGenre && currentGenre._id
-        ? allMovies.filter((m) => m.genre._id === currentGenre._id)
-        : allMovies;
+    let filtered = allMovies;
+    if (searchQuery) {
+      filtered = allMovies.filter((m) =>
+        m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    } else if (currentGenre && currentGenre._id)
+      filtered = allMovies.filter((m) => m.genre._id === currentGenre._id);
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -75,6 +85,7 @@ class Movies extends Component {
       sortColumn,
       pageSize,
       currentGenre,
+      searchQuery,
     } = this.state;
 
     const { movies, totalCount } = this.getPagedData();
@@ -92,6 +103,7 @@ class Movies extends Component {
           </Link>
         </div>
         <div className="col-8 offset-1">
+          <SearchInput value={searchQuery} onChange={this.handleSearchChange} />
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}

@@ -13,7 +13,7 @@ const SelectField = ({ name, label, options, onChange, error, rest }) => {
         className="custom-select"
       >
         {options.map((o) => (
-          <option key={o._id} _id={o._id} selected={o.selected}>
+          <option key={o._id} _id={o._id} value={o._id} selected={o.selected}>
             {o.name}
           </option>
         ))}
