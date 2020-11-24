@@ -26,6 +26,8 @@ Vidly display a list of movies with a banch of options, this app uses :
 - Filtering
 - Sorting
 - Reuable Components
+- Routing
+- Login Form
 
 ## <a name="router-App">Router-App</a>
 
