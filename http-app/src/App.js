@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
+import http from "./services/httpService.js";
+import Config from "./config.json";
 import "./App.css";
 
 class App extends Component {
@@ -8,22 +9,37 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const { data: posts } = await axios.get(
-      "https://jsonplaceholder.typicode.com/posts"
-    );
+    const { data: posts } = await http.get(Config.apiEndPoint);
+    console.log(posts);
     this.setState({ posts });
   }
 
-  handleAdd = () => {
-    console.log("Add");
+  handleAdd = async () => {
+    const data = { title: "a", body: "b" };
+    const { data: post } = await http.post(Config.apiEndPoint, data);
+    const posts = [post, ...this.state.posts];
+    this.setState({ posts });
+    console.log("Add", post);
   };
 
-  handleUpdate = (post) => {
-    console.log("Update", post);
+  handleUpdate = async (post) => {
+    post.title = post.title + " Updated!";
+    const { data: newPost } = await http.put(
+      Config.apiEndPoint + "/" + post.id,
+      post
+    );
+    const posts = [...this.state.posts];
+    const index = posts.indexOf(post);
+    posts[index] = { ...newPost };
+    this.setState({ posts });
+    console.log("Update", newPost);
   };
 
-  handleDelete = (post) => {
-    console.log("Delete", post);
+  handleDelete = async (post) => {
+    await http.delete(Config.apiEndPoint + "/" + post.id);
+    const posts = this.state.posts.filter((p) => p.id !== post.id);
+    this.setState({ posts });
+    console.log("Delete");
   };
 
   render() {
