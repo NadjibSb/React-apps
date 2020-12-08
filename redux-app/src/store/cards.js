@@ -1,32 +1,68 @@
-// Actions types
-const cardAdded = "CARD_ADDED";
-const cardArchived = "CARD_ARCHIVED";
+import { createSlice } from "@reduxjs/toolkit";
 
-// Actions
+let lastId = 1;
 
-export const addCard = (description) => {
-  return {
-    type: cardAdded,
-    payload: {
-      description,
+const slice = createSlice({
+  name: "Cards",
+  initialState: [],
+  reducers: {
+    addCard: (cards, action) => {
+      cards.push({
+        id: lastId++,
+        description: action.payload.description,
+        archived: false,
+      });
     },
-  };
-};
+    archiveCard: (cards, action) => {
+      cards.map((card) =>
+        card.id !== action.payload.id ? card : (card.archived = true)
+      );
+    },
+  },
+});
 
+export default slice.reducer;
+export const { addCard, archiveCard } = slice.actions;
+
+// -------- { createAction, createReducer } from @reduxjs/toolkit
+
+/*
+export const addCard = createAction("CARD_ADDED");
+export const archiveCard = createAction("CARD_ARCHIVED");
+
+let lastId = 1;
+
+export default createReducer([], {
+  [addCard.type]: (state, action) => {
+    state.push({
+      id: lastId++,
+      description: action.payload.description,
+      archived: false,
+    });
+  },
+  [archiveCard.type]: (state, action) => {
+    state.map((card) =>
+      card.id !== action.payload.id ? card : (card.archived = true)
+    );
+  },
+});
+*/
+
+// -------- Basic implementation
+
+/*
 export const archiveCard = (id) => {
   return {
-    type: cardArchived,
+    type: cardArchived.type,
     payload: {
       id,
     },
   };
 };
 
-let lastId = 1;
-
 export default function reducer(state = [], action) {
   switch (action.type) {
-    case actionTypes.cardAdded:
+    case addCard.type:
       return [
         ...state,
         {
@@ -35,9 +71,10 @@ export default function reducer(state = [], action) {
           archived: false,
         },
       ];
-    case actionTypes.cardArchived:
+    case archiveCard.type:
       return state.map((card) =>
         card.id !== action.payload.id ? card : { ...card, archived: true }
       );
   }
 }
+*/
