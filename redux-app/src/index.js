@@ -1,5 +1,7 @@
-import store from "./store";
-import actions from "./actions";
+import configureStore from "./store/store";
+import * as actions from "./store/cards";
+
+const store = configureStore();
 
 const unsubscribe = store.subscribe(() => {
   console.log(store.getState());

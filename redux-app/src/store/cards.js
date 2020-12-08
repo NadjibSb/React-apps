@@ -1,4 +1,26 @@
-import actionTypes from "./actionTypes";
+// Actions types
+const cardAdded = "CARD_ADDED";
+const cardArchived = "CARD_ARCHIVED";
+
+// Actions
+
+export const addCard = (description) => {
+  return {
+    type: cardAdded,
+    payload: {
+      description,
+    },
+  };
+};
+
+export const archiveCard = (id) => {
+  return {
+    type: cardArchived,
+    payload: {
+      id,
+    },
+  };
+};
 
 let lastId = 1;
 
