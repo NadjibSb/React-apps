@@ -12,7 +12,7 @@ store.dispatch(cardActions.addCard({ description: "card 1" }));
 store.dispatch(cardActions.addCard({ description: "card 2" }));
 store.dispatch(cardActions.archiveCard({ id: 1 }));
 store.dispatch(labelActions.addLabel({ description: "Label 1" }));
-
+console.log(cardActions.getArchivedCards(store.getState()));
 unsubscribe();
 
 store.dispatch(actions.archiveCard({ id: 2 }));

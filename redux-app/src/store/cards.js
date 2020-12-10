@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
 let lastId = 1;
 
@@ -23,6 +24,16 @@ const slice = createSlice({
 
 export default slice.reducer;
 export const { addCard, archiveCard } = slice.actions;
+
+/*
+export const getArchivedCards = (state) => {
+  return state.entities.cards.filter((c) => c.archived === true);
+};*/
+
+export const getArchivedCards = createSelector(
+  (state) => state.entities.cards,
+  (cards) => cards.filter((c) => c.archived === true)
+);
 
 // -------- { createAction, createReducer } from @reduxjs/toolkit
 
