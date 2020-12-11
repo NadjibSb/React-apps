@@ -1,6 +1,6 @@
 import configureStore from "./store/store";
-import * as cardActions from "./store/cards";
-import * as labelActions from "./store/labels";
+import { addCard, archiveCard, getArchivedCards } from "./store/entities/cards";
+import { addLabel } from "./store/entities/labels";
 
 const store = configureStore();
 
@@ -8,11 +8,11 @@ const unsubscribe = store.subscribe(() => {
   console.log(store.getState());
 });
 
-store.dispatch(cardActions.addCard({ description: "card 1" }));
-store.dispatch(cardActions.addCard({ description: "card 2" }));
-store.dispatch(cardActions.archiveCard({ id: 1 }));
-store.dispatch(labelActions.addLabel({ description: "Label 1" }));
-console.log(cardActions.getArchivedCards(store.getState()));
+store.dispatch(addCard({ description: "card 1" }));
+store.dispatch(addCard({ description: "card 2" }));
+store.dispatch(archiveCard({ id: 1 }));
+store.dispatch(addLabel({ description: "Label 1" }));
+console.log(getArchivedCards(store.getState()));
 unsubscribe();
 
-store.dispatch(actions.archiveCard({ id: 2 }));
+store.dispatch(archiveCard({ id: 2 }));
