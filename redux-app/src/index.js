@@ -1,8 +1,17 @@
 import configureStore from "./store/store";
 import { addCard, archiveCard, getArchivedCards } from "./store/entities/cards";
 import { addLabel } from "./store/entities/labels";
+import * as apiActions from "./store/api/apiActions";
 
 const store = configureStore();
+
+store.dispatch(
+  apiActions.apiCall({
+    url: "/bugs",
+    onSuccess: "bugsReceived",
+    onError: "apiRequestFailed",
+  })
+);
 
 const unsubscribe = store.subscribe(() => {
   console.log(store.getState());
