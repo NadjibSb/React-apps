@@ -11,6 +11,9 @@ import * as apiActions from "./store/api/apiActions";
 const store = configureStore();
 
 store.dispatch(loadCards());
+store.dispatch(addCard({ description: "Card 0" }));
+setTimeout(() => store.dispatch(archiveCard(3)), 2000);
+
 /*
 const unsubscribe = store.subscribe(() => {
   console.log(store.getState());
