@@ -1,18 +1,17 @@
 import configureStore from "./store/store";
-import { addCard, archiveCard, getArchivedCards } from "./store/entities/cards";
+import {
+  addCard,
+  archiveCard,
+  getArchivedCards,
+  loadCards,
+} from "./store/entities/cards";
 import { addLabel } from "./store/entities/labels";
 import * as apiActions from "./store/api/apiActions";
 
 const store = configureStore();
 
-store.dispatch(
-  apiActions.apiCall({
-    url: "/bugs",
-    onSuccess: "bugsReceived",
-    onError: "apiRequestFailed",
-  })
-);
-
+store.dispatch(loadCards());
+/*
 const unsubscribe = store.subscribe(() => {
   console.log(store.getState());
 });
@@ -25,3 +24,4 @@ console.log(getArchivedCards(store.getState()));
 unsubscribe();
 
 store.dispatch(archiveCard({ id: 2 }));
+*/
